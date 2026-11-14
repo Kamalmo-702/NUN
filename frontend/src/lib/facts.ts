@@ -1,0 +1,52 @@
+/** Established project facts (supplied by the NUN project). Not derived from the API. */
+export const FACTS = {
+  observations: 233,
+  coverage: "2001–2020",
+  lastObservation: "May 2020",
+  model: "Random Forest",
+  mae: "233.3",
+  rmse: "305.0",
+  r2: "0.8823",
+  holdoutMonths: 29,
+  recursiveMonths: 5,
+} as const;
+
+export const SERIES_COLORS = {
+  total: "#3985B8",
+  south: "#3C9474",
+  north: "#9273BD",
+  forecast: "#65A879",
+  decrease: "#C47A58",
+  evidence: "#688C91",
+} as const;
+
+export const DOWNLOADS = [
+  {
+    path: "/api/download/open-water.csv",
+    file: "open-water.csv",
+    type: "CSV",
+    title: "Open-water observations",
+    text: "Monthly open-water extent of Lake Chad, in km².",
+  },
+  {
+    path: "/api/download/pools.csv",
+    file: "pools.csv",
+    type: "CSV",
+    title: "Pool series",
+    text: "Southern Pool, Northern Pool and the reconciled lake total.",
+  },
+  {
+    path: "/api/download/evaluation.csv",
+    file: "evaluation.csv",
+    type: "CSV",
+    title: "Forecast evaluation",
+    text: "Evaluation of the Random Forest model on the chronological holdout.",
+  },
+  {
+    path: "/api/download/training-results.json",
+    file: "training-results.json",
+    type: "JSON",
+    title: "Training results",
+    text: "Model training results as produced by the NUN pipeline.",
+  },
+] as const;

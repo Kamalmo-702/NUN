@@ -1,0 +1,63 @@
+{
+  "product": "NUN Lake Chad Open-Water Forecast",
+  "source": {
+    "citation": "Li, H. (2021), figshare, DOI 10.6084/m9.figshare.12678995.v3",
+    "license": "CC BY 4.0",
+    "workbook_md5": "aeac6fd6db3ace5368c49124aad77334",
+    "variable": "MODo monthly open surface water area"
+  },
+  "coverage": {
+    "start": "2001-01-01",
+    "end": "2020-05-01",
+    "observations": 233,
+    "units": "km2"
+  },
+  "protocol": {
+    "training_end_exclusive": "2018-01-01",
+    "test_start": "2018-01-01",
+    "test_end": "2020-05-01",
+    "test_observations": 29,
+    "forecast_type": "one-month-ahead conditional on prior observed area"
+  },
+  "models": {
+    "seasonal_naive": {
+      "mae_km2": 267.317,
+      "rmse_km2": 347.259,
+      "r2": 0.8474,
+      "mean_absolute_percentage_error_pct": 12.718
+    },
+    "ridge": {
+      "mae_km2": 244.927,
+      "rmse_km2": 352.32,
+      "r2": 0.8429,
+      "mean_absolute_percentage_error_pct": 11.056
+    },
+    "random_forest": {
+      "mae_km2": 233.317,
+      "rmse_km2": 304.989,
+      "r2": 0.8823,
+      "mean_absolute_percentage_error_pct": 11.317
+    }
+  },
+  "selected_model": "random_forest",
+  "selected_metrics": {
+    "mae_km2": 233.317,
+    "rmse_km2": 304.989,
+    "r2": 0.8823,
+    "mean_absolute_percentage_error_pct": 11.317
+  },
+  "benchmark_metrics": {
+    "mae_km2": 267.317,
+    "rmse_km2": 347.259,
+    "r2": 0.8474,
+    "mean_absolute_percentage_error_pct": 12.718
+  },
+  "trend": {
+    "method": "Mann-Kendall tau on monthly seasonal anomalies; Sen slope",
+    "tau": -0.17582,
+    "p_value": 6.5e-05,
+    "sen_slope_km2_per_year": -15.708,
+    "slope_95pct_low": -24.042,
+    "slope_95pct_high": -7.899
+  }
+}
