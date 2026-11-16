@@ -20,13 +20,8 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from scipy.stats import kendalltau, theilslopes
 
-# --- التعديل الديناميكي للمسارات لتعمل محلياً وعلى Vercel ---
-_current_dir = Path(__file__).resolve().parent
-if (_current_dir / "data").exists() or (_current_dir / "models").exists():
-    ROOT = _current_dir
-else:
-    ROOT = _current_dir.parent
-# -----------------------------------------------------------
+# بما أن ملف api.py أصبح في المجلد الرئيسي (Root)
+ROOT = Path(__file__).resolve().parent
 
 DATA_DIR = ROOT / "data"
 MODEL_DIR = ROOT / "models"
@@ -268,7 +263,7 @@ def download_training_results() -> FileResponse:
     return FileResponse(RESULTS_FILE, media_type="application/json", filename="training_results.json")
 
 
-# The integrated release places the Vite production build in ../frontend/dist.
+# The integrated release places the Vite production build in frontend/dist.
 # Mount it last so all /api routes above remain authoritative.
 FRONTEND_DIST = ROOT / "frontend" / "dist"
 if FRONTEND_DIST.is_dir():
