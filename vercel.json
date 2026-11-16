@@ -1,12 +1,12 @@
 {
   "services": {
-    "frontend": {
-      "root": "frontend",
-      "framework": "vite"
-    },
     "app": {
       "root": "app",
       "framework": "fastapi"
+    },
+    "frontend": {
+      "root": "frontend",
+      "framework": "vite"
     }
   },
   "rewrites": [
