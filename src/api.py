@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 from functools import lru_cache
 from pathlib import Path
+import os
 
 import joblib
 import numpy as np
@@ -19,7 +20,14 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from scipy.stats import kendalltau, theilslopes
 
-ROOT = Path(__file__).resolve().parents[1]
+# --- التعديل الديناميكي للمسارات لتعمل محلياً وعلى Vercel ---
+_current_dir = Path(__file__).resolve().parent
+if (_current_dir / "data").exists() or (_current_dir / "models").exists():
+    ROOT = _current_dir
+else:
+    ROOT = _current_dir.parent
+# -----------------------------------------------------------
+
 DATA_DIR = ROOT / "data"
 MODEL_DIR = ROOT / "models"
 AREA_FILE = DATA_DIR / "lake_chad_open_water_monthly.csv"
@@ -262,6 +270,6 @@ def download_training_results() -> FileResponse:
 
 # The integrated release places the Vite production build in ../frontend/dist.
 # Mount it last so all /api routes above remain authoritative.
-FRONTEND_DIST = Path(__file__).resolve().parents[1] / "frontend" / "dist"
+FRONTEND_DIST = ROOT / "frontend" / "dist"
 if FRONTEND_DIST.is_dir():
     app.mount("/", StaticFiles(directory=FRONTEND_DIST, html=True), name="frontend")
