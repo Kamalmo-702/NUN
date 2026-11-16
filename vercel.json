@@ -4,12 +4,15 @@
       "src": "api.py",
       "use": "@vercel/python",
       "config": {
-        "includeFiles": "data/**,models/**"
+        "includeFiles": ["data/**", "models/**"]
       }
     },
     {
       "src": "frontend/package.json",
-      "use": "@vercel/static-build"
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
     }
   ],
   "rewrites": [
@@ -19,7 +22,7 @@
     },
     {
       "source": "/(.*)",
-      "destination": "/frontend"
+      "destination": "/frontend/$1"
     }
   ]
 }
