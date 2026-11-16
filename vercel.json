@@ -1,26 +1,22 @@
 {
-  "services": {
-    "app": {
-      "root": "src",
-      "framework": "fastapi"
+  "builds": [
+    {
+      "src": "src/api.py",
+      "use": "@vercel/python"
     },
-    "frontend": {
-      "root": "frontend",
-      "framework": "vite"
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build"
     }
-  },
+  ],
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": {
-        "service": "app"
-      }
+      "destination": "/src/api.py"
     },
     {
       "source": "/(.*)",
-      "destination": {
-        "service": "frontend"
-      }
+      "destination": "/frontend"
     }
   ]
 }
