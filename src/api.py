@@ -20,8 +20,8 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from scipy.stats import kendalltau, theilslopes
 
-# بما أن ملف api.py أصبح في المجلد الرئيسي (Root)
-ROOT = Path(__file__).resolve().parent
+# التعديل هنا: إضافة .parent مرة كمان عشان يخرج من مجلد src للمجلد الرئيسي
+ROOT = Path(__file__).resolve().parent.parent
 
 DATA_DIR = ROOT / "data"
 MODEL_DIR = ROOT / "models"
