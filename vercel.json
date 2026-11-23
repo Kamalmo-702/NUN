@@ -1,28 +1,16 @@
 {
-  "builds": [
-    {
-      "src": "src/api.py",
-      "use": "@vercel/python",
-      "config": {
-        "includeFiles": ["data/**", "models/**"]
-      }
-    },
-    {
-      "src": "frontend/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "cd frontend && pnpm install --frozen-lockfile",
+  "buildCommand": "cd frontend && pnpm build",
+  "outputDirectory": "frontend/dist",
+  "functions": {
+    "api/index.py": {
+      "includeFiles": "{data,models,src}/**",
+      "maxDuration": 30
     }
-  ],
+  },
   "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/src/api.py"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/frontend/$1"
-    }
+    { "source": "/api/(.*)", "destination": "/api/index" }
   ]
 }

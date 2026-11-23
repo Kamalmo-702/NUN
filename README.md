@@ -6,7 +6,7 @@ It contains no vegetation product or vegetation model.
 ## Run the integrated application
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 uvicorn src.api:app --port 8001
 ```
 

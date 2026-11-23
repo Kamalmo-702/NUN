@@ -12,7 +12,11 @@ export interface ApiResult<T> {
   message?: string;
 }
 
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.trim().replace(/\/$/, "") ?? "";
+// Production (Vercel / FastAPI) is same-origin, so the base is always "" and requests go to /api/*.
+// VITE_API_BASE_URL is honoured only by `pnpm dev`, so a stray env var can never break a deployed build.
+const API_BASE_URL: string = import.meta.env.DEV
+  ? ((import.meta.env.VITE_API_BASE_URL as string | undefined)?.trim().replace(/\/$/, "") ?? "")
+  : "";
 
 export const apiConfigured = true;
 
@@ -31,12 +35,6 @@ export const ENDPOINTS = {
 export type EndpointKey = keyof typeof ENDPOINTS;
 
 export async function apiRequest<T>(path: string, signal?: AbortSignal): Promise<ApiResult<T>> {
-  if (!API_BASE_URL) {
-    return {
-      state: "NO_DATA",
-      message: "The backend connection is not configured. Set VITE_API_BASE_URL.",
-    };
-  }
   try {
     const response = await fetch(`${API_BASE_URL}${path}`, {
       signal,
@@ -84,7 +82,6 @@ export type DownloadOutcome = { ok: true } | { ok: false; message: string };
 
 /** Fetches a backend file and hands it to the browser as a real download. */
 export async function downloadFile(path: string, filename: string): Promise<DownloadOutcome> {
-  if (!API_BASE_URL) return { ok: false, message: "Backend connection is not configured." };
   try {
     const response = await fetch(`${API_BASE_URL}${path}`);
     if (!response.ok) return { ok: false, message: `The data service returned HTTP ${response.status}.` };

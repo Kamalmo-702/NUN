@@ -20,7 +20,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from scipy.stats import kendalltau, theilslopes
 
-# التعديل هنا: إضافة .parent مرة كمان عشان يخرج من مجلد src للمجلد الرئيسي
+# Project root (the folder that contains data/, models/ and frontend/).
 ROOT = Path(__file__).resolve().parent.parent
 
 DATA_DIR = ROOT / "data"
@@ -91,6 +91,14 @@ def model_bundle() -> dict:
     return joblib.load(MODEL_FILE)
 
 
+def model_loaded() -> bool:
+    """Never let a model-loading problem take the whole health endpoint down."""
+    try:
+        return bool(model_bundle().get("estimator"))
+    except Exception:  # noqa: BLE001
+        return False
+
+
 def date_filtered(frame: pd.DataFrame, start: str | None, end: str | None) -> pd.DataFrame:
     try:
         start_date = pd.Timestamp(start) if start else None
@@ -125,13 +133,12 @@ def seasonal_trend(frame: pd.DataFrame, value_column: str) -> dict:
 @app.get("/api/health")
 def health() -> dict:
     data, pool_data = area(), pools()
-    bundle = model_bundle()
     return {
         "status": "ok",
         "product": "NUN Lake Chad Open-Water Monitoring",
         "area_observations": len(data),
         "pool_observations": len(pool_data),
-        "model_loaded": bool(bundle.get("estimator")),
+        "model_loaded": model_loaded(),
         "latest_observation": data.date.max().strftime("%Y-%m-%d"),
         "live_monitoring": False,
     }
